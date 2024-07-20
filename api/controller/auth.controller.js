@@ -11,9 +11,7 @@ const signup = asyncHandler(async (req, res) => {
     const newUser = new User({ username, email, password: hashedPassword });
     try {
         await newUser.save();
-        res.status(200).json(
-            new ApiResponse(200, newUser, "user Created successfully")
-        );
+        res.status(200).json(new ApiResponse(200, "user Created successfully"));
     } catch (error) {
         throw new ApiError(500, error.message);
     }
