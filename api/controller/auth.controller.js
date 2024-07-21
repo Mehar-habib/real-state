@@ -36,7 +36,8 @@ const signin = asyncHandler(async (req, res) => {
         // all things except the password
         const { password: pass, ...others } = validUser._doc;
 
-        res.cookie("access_token", token, { httpOnly: true })
+        return res
+            .cookie("access_token", token, { httpOnly: true })
             .status(200)
             .json(new ApiResponse(200, others, "user logged in successfully"));
     } catch (error) {
@@ -72,7 +73,8 @@ const google = asyncHandler(async (req, res) => {
             await newUser.save();
             const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
             const { password, ...others } = newUser._doc;
-            res.cookie("access_token", token, { httpOnly: true })
+            return res
+                .cookie("access_token", token, { httpOnly: true })
                 .status(200)
                 .json(
                     new ApiResponse(200, others, "user logged in successfully")
@@ -85,7 +87,8 @@ const google = asyncHandler(async (req, res) => {
 
 const signOut = asyncHandler(async (req, res) => {
     try {
-        res.status(200)
+        return res
+            .status(200)
             .clearCookie("Access_token")
             .json({ message: "User Logged Out Successfully" });
     } catch (error) {

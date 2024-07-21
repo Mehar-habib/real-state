@@ -5,7 +5,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 
 const test = (req, res) => {
-    res.json({ message: "test" });
+    return res.json({ message: "test" });
 };
 
 const updateUser = asyncHandler(async (req, res) => {
@@ -29,9 +29,9 @@ const updateUser = asyncHandler(async (req, res) => {
             { new: true }
         );
         const { password, ...others } = updateUser._doc;
-        res.status(200).json(
-            new ApiResponse(200, others, "user updated successfully")
-        );
+        return res
+            .status(200)
+            .json(new ApiResponse(200, others, "user updated successfully"));
     } catch (error) {
         throw new ApiError(500, error.message);
     }
@@ -43,7 +43,8 @@ const deleteUserAccount = asyncHandler(async (req, res) => {
     }
     try {
         await User.findByIdAndDelete(req.params.id);
-        res.status(200)
+        return res
+            .status(200)
             .clearCookie("access_token")
             .json(new ApiResponse(200, null, "user deleted successfully"));
     } catch (error) {
