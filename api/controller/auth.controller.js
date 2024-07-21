@@ -82,4 +82,14 @@ const google = asyncHandler(async (req, res) => {
         throw new ApiError(500, error.message);
     }
 });
-export { signup, signin, google };
+
+const signOut = asyncHandler(async (req, res) => {
+    try {
+        res.status(200)
+            .clearCookie("Access_token")
+            .json({ message: "User Logged Out Successfully" });
+    } catch (error) {
+        throw new ApiError(500, error.message);
+    }
+});
+export { signup, signin, google, signOut };
