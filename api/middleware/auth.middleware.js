@@ -1,11 +1,10 @@
 import ApiError from "../utils/ApiError.js";
 import jwt from "jsonwebtoken";
+import asyncHandler from "../utils/asyncHandler.js";
 
-export const verifyToken = (req, res, next) => {
+export const verifyToken = asyncHandler(async (req, res, next) => {
     try {
-        const token =
-            req.cookies?.access_token ||
-            req.header("Authorization").replace("Bearer ", "");
+        const token = req.cookies?.access_token;
         if (!token) {
             throw new ApiError(401, "unauthorized");
         }
@@ -20,4 +19,4 @@ export const verifyToken = (req, res, next) => {
     } catch (error) {
         throw new ApiError(500, error.message);
     }
-};
+});
