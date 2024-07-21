@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 function OAuth() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const handleGoogleClick = async () => {
     try {
       const provider = new GoogleAuthProvider();
@@ -21,7 +22,7 @@ function OAuth() {
         body: JSON.stringify({
           name: result.user.displayName,
           email: result.user.email,
-          image: result.user.photoURL,
+          photo: result.user.photoURL,
         }),
       });
 
