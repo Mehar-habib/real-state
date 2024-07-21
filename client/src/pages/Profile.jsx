@@ -28,24 +28,25 @@ export default function Profile() {
   }, [file]);
 
   const handleFileUpload = (file) => {
-    const storage = getStorage(app);
-    const fileName = new Date().getTime() + file.name;
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    const storage = getStorage(app); // Get Firebase storage instance
+    const fileName = new Date().getTime() + file.name; // Generate a unique file name
+    const storageRef = ref(storage, fileName); // Create a reference to the file in storage
+    const uploadTask = uploadBytesResumable(storageRef, file); // Start the file upload
 
+    // Listen for state changes during the upload process
     uploadTask.on(
       "state_changed",
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setFilePerc(Math.round(progress));
+        setFilePerc(Math.round(progress)); // Update the file upload progress
       },
       (error) => {
-        setFileUploadError(true);
+        setFileUploadError(true); // Handle any errors during upload
       },
       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
-          setFormData({ ...formData, avatar: downloadURL })
+        getDownloadURL(uploadTask.snapshot.ref).then(
+          (downloadURL) => setFormData({ ...formData, avatar: downloadURL }) // Get the download URL and update formData state
         );
       }
     );
