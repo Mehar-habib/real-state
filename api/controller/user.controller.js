@@ -1,6 +1,7 @@
 import ApiError from "../utils/ApiError.js";
 import bcryptjs from "bcryptjs";
 import User from "../models/user.model.js";
+import Listing from "../models/listing.model.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 
@@ -52,4 +53,19 @@ const deleteUserAccount = asyncHandler(async (req, res) => {
     }
 });
 
-export { test, updateUser, deleteUserAccount };
+const getAllUserListings = asyncHandler(async (req, res) => {
+    if (req.user.id === req.params.id) {
+        try {
+            const listings = await Listing.find({ userRef: req.params.id });
+            res.status(200).json(
+                new ApiResponse(200, listings, "Listings fetched successfully")
+            );
+        } catch (error) {
+            throw new ApiError(500, error.message);
+        }
+    } else {
+        throw new ApiError(403, "Forbidden");
+    }
+});
+
+export { test, updateUser, deleteUserAccount, getAllUserListings };
