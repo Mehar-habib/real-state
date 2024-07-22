@@ -32,4 +32,30 @@ const deleteListing = asyncHandler(async (req, res) => {
     }
 });
 
-export { createListing, deleteListing };
+const updateListing = asyncHandler(async (req, res) => {
+    const listing = await Listing.findById(req.params.id);
+    if (!listing) throw new ApiError(404, "listing not found");
+
+    if (req.user.id !== listing.userRef)
+        throw new ApiError(403, "you can only update your own listing");
+    try {
+        const updatedListing = await Listing.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true }
+        );
+        return res
+            .status(200)
+            .json(
+                new ApiResponse(
+                    200,
+                    updatedListing,
+                    "listing updated successfully"
+                )
+            );
+    } catch (error) {
+        throw new ApiError(500, error.message);
+    }
+});
+
+export { createListing, deleteListing, updateListing };
