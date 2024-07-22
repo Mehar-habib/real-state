@@ -58,4 +58,16 @@ const updateListing = asyncHandler(async (req, res) => {
     }
 });
 
-export { createListing, deleteListing, updateListing };
+const getListing = asyncHandler(async (req, res) => {
+    try {
+        const listing = await Listing.findById(req.params.id);
+        if (!listing) throw new ApiError(404, "listing not found");
+        return res
+            .status(200)
+            .json(new ApiResponse(200, listing, "listing found successfully"));
+    } catch (error) {
+        throw new ApiError(500, error.message);
+    }
+});
+
+export { createListing, deleteListing, updateListing, getListing };
