@@ -68,4 +68,17 @@ const getAllUserListings = asyncHandler(async (req, res) => {
     }
 });
 
-export { test, updateUser, deleteUserAccount, getAllUserListings };
+const getUser = asyncHandler(async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) throw new ApiError(404, "user not found");
+        const { password, ...others } = user._doc;
+        return res
+            .status(200)
+            .json(new ApiResponse(200, others, "user fetched successfully"));
+    } catch (error) {
+        throw new ApiError(500, error.message);
+    }
+});
+
+export { test, updateUser, deleteUserAccount, getAllUserListings, getUser };
