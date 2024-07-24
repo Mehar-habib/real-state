@@ -283,7 +283,7 @@ function UpdatesListing() {
                 type="number"
                 id="regularPrice"
                 min="50"
-                max="10000"
+                max="1000000"
                 required
                 className="p-3 border border-gray-300 rounded-lg"
                 onChange={handleChange}
@@ -302,7 +302,7 @@ function UpdatesListing() {
                   type="number"
                   id="discountPrice"
                   min="0"
-                  max="1000"
+                  max="1000000"
                   required
                   className="p-3 border border-gray-300 rounded-lg"
                   onChange={handleChange}
@@ -370,7 +370,7 @@ function UpdatesListing() {
             disabled={loading || uploading}
             className="p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
           >
-            {loading ? "Creating..." : "update Listing"}
+            {loading ? "Updating..." : "update Listing"}
           </button>
           {error && <p className="text-red-700">{error}</p>}
         </div>
